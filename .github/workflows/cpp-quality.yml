@@ -1,0 +1,115 @@
+name: C++ Code Quality Check
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.cpp'
+      - '**.hpp'
+      - '**.h'
+      - '**.c'
+      - '**/Makefile'
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**.cpp'
+      - '**.hpp'
+      - '**.h'
+      - '**.c'
+      - '**/Makefile'
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential g++ make valgrind clang-format
+    
+    - name: Find all Makefiles
+      id: find-makefiles
+      run: |
+        # Find all Makefiles in the repository
+        MAKEFILES=$(find . -name "Makefile" -not -path "./.git/*" | sort)
+        echo "Found Makefiles:"
+        echo "$MAKEFILES"
+        echo "makefiles<<EOF" >> $GITHUB_OUTPUT
+        echo "$MAKEFILES" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+    
+    - name: Compile all projects
+      run: |
+        EXIT_CODE=0
+        echo "Starting compilation checks..."
+        
+        # Read makefiles from previous step
+        MAKEFILES="${{ steps.find-makefiles.outputs.makefiles }}"
+        
+        if [ -z "$MAKEFILES" ]; then
+          echo "No Makefiles found. Skipping compilation."
+          exit 0
+        fi
+        
+        for makefile in $MAKEFILES; do
+          DIR=$(dirname "$makefile")
+          echo ""
+          echo "================================================"
+          echo "Compiling: $DIR"
+          echo "================================================"
+          
+          cd "$GITHUB_WORKSPACE/$DIR"
+          
+          # Try to compile
+          if make; then
+            echo "✅ Compilation successful: $DIR"
+            
+            # Clean up
+            make fclean 2>/dev/null || make clean 2>/dev/null || true
+          else
+            echo "❌ Compilation failed: $DIR"
+            EXIT_CODE=1
+          fi
+          
+          cd "$GITHUB_WORKSPACE"
+        done
+        
+        exit $EXIT_CODE
+    
+    - name: Check for common issues
+      run: |
+        echo "Checking for common C++ issues..."
+        
+        # Check for using namespace std (forbidden in 42)
+        if grep -r "using namespace" --include="*.cpp" --include="*.hpp" .; then
+          echo "⚠️  Warning: 'using namespace' found (may violate 42 norm)"
+        fi
+        
+        # Check for forbidden functions (examples)
+        if grep -r "printf\|scanf\|malloc\|free\|calloc\|realloc" --include="*.cpp" --include="*.hpp" .; then
+          echo "⚠️  Warning: C-style functions found (prefer C++ alternatives)"
+        fi
+        
+        echo "✅ Code quality checks completed"
+      continue-on-error: true
+
+    - name: Summary
+      if: always()
+      run: |
+        echo ""
+        echo "================================================"
+        echo "Build Summary"
+        echo "================================================"
+        echo "See above for detailed results."
+        echo ""
+        echo "Remember:"
+        echo "  - All code must compile with -Wall -Wextra -Werror"
+        echo "  - Follow 42 School Norm"
+        echo "  - Check subject.pdf for specific requirements"
+        echo "  - Test for memory leaks with valgrind"

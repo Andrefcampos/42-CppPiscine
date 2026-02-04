@@ -1,0 +1,100 @@
+name: Documentation Check
+
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Check README presence
+      run: |
+        echo "================================================"
+        echo "Documentation Check"
+        echo "================================================"
+        echo ""
+        
+        # Check main README
+        if [ ! -f "README.md" ]; then
+          echo "❌ ERROR: Main README.md is missing"
+          exit 1
+        else
+          echo "✅ Main README.md exists"
+        fi
+        
+        # Check CONTRIBUTING.md
+        if [ ! -f "CONTRIBUTING.md" ]; then
+          echo "⚠️  Warning: CONTRIBUTING.md is missing"
+        else
+          echo "✅ CONTRIBUTING.md exists"
+        fi
+        
+        # Check for module READMEs
+        echo ""
+        echo "Module Documentation:"
+        for dir in Module*/; do
+          if [ -d "$dir" ]; then
+            if [ -f "${dir}README.md" ]; then
+              echo "  ✅ ${dir}README.md"
+            else
+              echo "  ⚠️  Missing: ${dir}README.md"
+            fi
+          fi
+        done
+        
+        echo ""
+        echo "✅ Documentation check completed"
+    
+    - name: Check for broken links
+      run: |
+        echo ""
+        echo "Checking for potential broken links in README..."
+        
+        # Simple check for common markdown link issues
+        if grep -r "\[.*\](\s*)" *.md 2>/dev/null; then
+          echo "⚠️  Warning: Found potentially empty links"
+        fi
+        
+        if grep -r "!\[.*\](\s*)" *.md 2>/dev/null; then
+          echo "⚠️  Warning: Found potentially broken image links"
+        fi
+        
+        echo "Link check completed"
+      continue-on-error: true
+    
+    - name: Verify subject.pdf
+      run: |
+        echo ""
+        echo "Checking for subject.pdf..."
+        
+        if [ -f "subject.pdf" ]; then
+          echo "✅ subject.pdf found"
+          ls -lh subject.pdf
+        else
+          echo "⚠️  Warning: subject.pdf not found"
+          echo "    Remember: subject.pdf is the single source of truth"
+        fi
+      continue-on-error: true
+    
+    - name: Summary
+      if: always()
+      run: |
+        echo ""
+        echo "================================================"
+        echo "Documentation Summary"
+        echo "================================================"
+        echo ""
+        echo "Remember to keep documentation updated as the project evolves:"
+        echo "  - Main README.md: Project overview and structure"
+        echo "  - Module READMEs: Specific exercises and concepts"
+        echo "  - CONTRIBUTING.md: Coding standards and guidelines"
+        echo "  - subject.pdf: The ultimate source of truth"

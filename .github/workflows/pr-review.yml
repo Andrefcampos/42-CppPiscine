@@ -1,0 +1,139 @@
+name: PR Review Checklist
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  review-checklist:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Check PR compliance
+      run: |
+        echo "================================================"
+        echo "42 School Piscine Object - PR Review Checklist"
+        echo "================================================"
+        echo ""
+        
+        # Initialize counters
+        WARNINGS=0
+        ERRORS=0
+        
+        # Check if subject.pdf exists
+        if [ ! -f "subject.pdf" ]; then
+          echo "⚠️  Warning: subject.pdf not found in repository"
+          WARNINGS=$((WARNINGS + 1))
+        else
+          echo "✅ Subject PDF found"
+        fi
+        
+        # Check for C++ files
+        CPP_FILES=$(find . -name "*.cpp" -o -name "*.hpp" | grep -v ".git" | wc -l)
+        if [ "$CPP_FILES" -eq 0 ]; then
+          echo "⚠️  Warning: No C++ files found"
+          WARNINGS=$((WARNINGS + 1))
+        else
+          echo "✅ Found $CPP_FILES C++ files"
+        fi
+        
+        # Check for Makefiles
+        MAKEFILES=$(find . -name "Makefile" | grep -v ".git" | wc -l)
+        if [ "$MAKEFILES" -eq 0 ]; then
+          echo "⚠️  Warning: No Makefiles found"
+          WARNINGS=$((WARNINGS + 1))
+        else
+          echo "✅ Found $MAKEFILES Makefile(s)"
+        fi
+        
+        # Check for proper file organization
+        echo ""
+        echo "File Organization:"
+        find . -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "Makefile" \) | grep -v ".git" | head -20
+        
+        echo ""
+        echo "================================================"
+        echo "Review Reminders:"
+        echo "================================================"
+        echo "Please verify:"
+        echo "  [ ] Code compiles without errors"
+        echo "  [ ] No memory leaks (tested with valgrind)"
+        echo "  [ ] Follows 42 School Norm"
+        echo "  [ ] Matches subject.pdf requirements"
+        echo "  [ ] Proper error handling"
+        echo "  [ ] Orthodox Canonical Form (when required)"
+        echo "  [ ] No forbidden functions/libraries"
+        echo "  [ ] Code is clear and well-organized"
+        echo ""
+        
+        if [ "$ERRORS" -gt 0 ]; then
+          echo "❌ Found $ERRORS error(s)"
+          exit 1
+        elif [ "$WARNINGS" -gt 0 ]; then
+          echo "⚠️  Found $WARNINGS warning(s)"
+        else
+          echo "✅ All basic checks passed"
+        fi
+    
+    - name: Comment on PR
+      if: always()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const comment = `## 42 School Review Checklist ✅
+          
+          Thank you for your contribution! Please ensure your code meets the following criteria:
+          
+          ### Mandatory Requirements
+          - [ ] Code compiles with \`-Wall -Wextra -Werror\`
+          - [ ] No memory leaks (verified with valgrind)
+          - [ ] Follows 42 School Norm
+          - [ ] Complies with \`subject.pdf\` requirements
+          - [ ] No forbidden functions or libraries
+          
+          ### Code Quality
+          - [ ] Proper error handling
+          - [ ] Orthodox Canonical Form (classes)
+          - [ ] Clear variable/function names
+          - [ ] Appropriate comments
+          - [ ] No trailing whitespace
+          
+          ### Testing
+          - [ ] Basic functionality tested
+          - [ ] Edge cases considered
+          - [ ] Invalid input handled
+          - [ ] No crashes or undefined behavior
+          
+          ---
+          **Remember**: The \`subject.pdf\` is the single source of truth!
+          `;
+          
+          // Only comment once
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const botComment = comments.find(comment => 
+            comment.user.type === 'Bot' && 
+            comment.body.includes('42 School Review Checklist')
+          );
+          
+          if (!botComment) {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+          }
