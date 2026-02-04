@@ -48,5 +48,8 @@ obj/
 *.log
 test_results/
 
+# Personal progress tracking (optional)
+# PROGRESS.md
+
 # Subject PDFs (if you want to exclude them)
 # subject.pdf

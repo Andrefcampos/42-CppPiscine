@@ -150,6 +150,15 @@ c++ -Wall -Wextra -Werror -std=c++98 *.cpp -o program_name
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code review process and coding standards.
 
+## ❓ FAQ
+
+Check out [FAQ.md](FAQ.md) for answers to common questions about:
+- Getting started
+- Coding standards
+- Compilation and testing
+- Common issues and solutions
+- Best practices
+
 ## 🤝 Acknowledgments
 
 - 42 School for the project subject
