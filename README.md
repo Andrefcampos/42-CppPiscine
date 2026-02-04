@@ -33,11 +33,38 @@ The project is organized into modules, each focusing on specific OOP concepts:
 
 ## 🚀 Getting Started
 
+> **📖 New to this project?** Check out the [Setup Guide](SETUP.md) for detailed instructions!
+
 ### Prerequisites
 
 - C++ compiler with C++98 standard support or higher (g++, clang++)
 - Make
 - Git
+- Valgrind (recommended for memory leak detection)
+
+### Quick Start
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Andrefcampos/42-CppPiscine.git
+   cd 42-CppPiscine
+   ```
+
+2. **Add the subject.pdf** (see [SUBJECT_README.md](SUBJECT_README.md))
+
+3. **Set up your first exercise**:
+   ```bash
+   ./setup_exercise.sh Module00 ex00 YourClassName
+   cd Module00/ex00
+   ```
+
+4. **Build and test**:
+   ```bash
+   make
+   ./program_name
+   ```
+
+For complete setup instructions, see [SETUP.md](SETUP.md).
 
 ### Building
 
