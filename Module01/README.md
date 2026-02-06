@@ -1,44 +1,114 @@
-# Module 00 - Introduction to Object-Oriented Programming
+# Module 01 - Object Relationships
 
 ## Overview
 
-Module 00 introduces the fundamental concepts of Object-Oriented Programming in C++. This module covers the basics of classes, encapsulation, and the importance of proper resource management.
+Module 01 explores the fundamental relationships between objects in Object-Oriented Programming. This module focuses on understanding how objects interact, share data, and collaborate through four main relationship types: Composition, Aggregation, Inheritance, and Association.
 
 ## Learning Objectives
 
-- Understand the difference between procedural and object-oriented programming
-- Learn how to define and use classes in C++
-- Master the Orthodox Canonical Form
-- Understand encapsulation and data hiding
-- Learn proper memory management with constructors and destructors
+- Understand **Composition**: Strong ownership (HAS-A relationship with same lifecycle)
+- Implement **Aggregation**: Weak ownership (objects can be shared and transferred)
+- Practice **Inheritance**: IS-A relationship with polymorphism
+- Master **Association**: Collaboration without ownership
+- Learn to choose the appropriate relationship for each scenario
+- Understand object lifecycle management in different contexts
 
 ## Exercises
 
 | Exercise | Name | Description | Status |
 |----------|------|-------------|--------|
-| ex00 | Example Exercise | Demonstrates basic class structure | ✅ Example |
+| ex00 | Putting it into practice | Implements all 4 object relationships | ✅ Complete |
 
-> **Note**: This is a template module. Actual exercises should be implemented according to the subject.pdf.
+## Project Structure
+
+```
+Module01/
+  ex00/
+    inc/              # Header files
+    src/              # Implementation files
+    Makefile          # Build configuration
+    README.md         # Exercise documentation
+  README.md           # Module overview
+  en.subject.pdf      # Subject requirements
+```
 
 ## Key Concepts
 
-### Classes and Objects
-- **Class**: A blueprint for creating objects (user-defined data type)
-- **Object**: An instance of a class
-- **Member variables**: Data stored in an object
-- **Member functions**: Functions that operate on object data
+### 1. Composition (Strong Ownership)
+**"Part-of" relationship** - Component cannot exist without the container
 
-### Encapsulation
-- **Private members**: Hidden from outside access (prefix with `_`)
-- **Public members**: Accessible interface
-- **Getters/Setters**: Controlled access to private data
+```cpp
+class Worker {
+private:
+    Position coordonnee;  // Created and destroyed with Worker
+    Statistic stat;       // Integral part of Worker
+};
+```
 
-### Orthodox Canonical Form
-The standard form that every C++ class should implement:
-1. **Default Constructor**: Initializes an object
-2. **Copy Constructor**: Creates a copy of an object
-3. **Assignment Operator**: Assigns one object to another
-4. **Destructor**: Cleans up resources when object is destroyed
+**Key Points:**
+- Members are objects (not pointers)
+- Same lifecycle as container
+- Strong coupling
+
+### 2. Aggregation (Weak Ownership)
+**"Has-a" relationship** - Object can exist independently
+
+```cpp
+class Worker {
+private:
+    std::vector<Tool*> tools;  // Can be given/taken away
+public:
+    void takeTool(Tool* tool);
+    void removeTool(Tool* tool);
+};
+```
+
+**Key Points:**
+- Members are pointers
+- Independent lifecycle
+- Can be shared/transferred
+- Container doesn't delete them
+
+### 3. Inheritance (IS-A Relationship)
+**Hierarchical relationship** - Derived class is a specialized version of base class
+
+```cpp
+class Tool {
+public:
+    virtual void use() = 0;  // Pure virtual
+    virtual ~Tool() {}
+};
+
+class Shovel : public Tool {
+public:
+    void use() override;  // Must implement
+};
+```
+
+**Key Points:**
+- Code reuse through inheritance
+- Polymorphism via virtual functions
+- Abstract classes define interfaces
+- `dynamic_cast` for safe type checking
+
+### 4. Association (Collaboration)
+**"Uses-a" relationship** - Objects collaborate but neither owns the other
+
+```cpp
+class Workshop {
+private:
+    std::vector<Worker*> workers;  // References, not ownership
+public:
+    void registerWorker(Worker* w);
+    void releaseWorker(Worker* w);
+};
+```
+
+**Key Points:**
+- Bidirectional relationship possible
+- Loose coupling
+- Both can exist independently
+- No ownership implications
 
 ## Compilation
 
@@ -199,7 +269,7 @@ Before submitting:
 
 ## Next Steps
 
-After completing Module 00:
+After completing Module 01:
 - Understand the basics of OOP in C++
 - Be comfortable with Orthodox Canonical Form
 - Know how to manage memory properly
