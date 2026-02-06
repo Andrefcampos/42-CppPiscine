@@ -49,7 +49,11 @@ obj/
 test_results/
 
 # Personal progress tracking (optional)
-# PROGRESS.md
+PROGRESS.md
+IMPLEMENTATION_INDEX.md
+IMPLEMENTATION_SUMMARY.md
+SETUP.md
+.gitignore
 
 # Subject PDFs (if you want to exclude them)
 # subject.pdf

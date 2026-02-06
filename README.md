@@ -21,19 +21,29 @@ The project is organized into modules, each focusing on specific OOP concepts:
 
 ```
 .
-├── Module00/          # Introduction to OOP basics
+├── Module00/          # Object Relationships (Composition, Aggregation, Inheritance, Association)
 ├── Module01/          # Advanced OOP concepts
 ├── Module02/          # Design patterns
 ├── Module03/          # Advanced C++ features
 ├── Module04/          # Practical applications
-└── subject.pdf        # Official project subject (source of truth)
+├── Module05/          # Final projects
+├── Guides/            # Documentation and guides
+│   ├── SETUP.md                   # Complete setup instructions
+│   ├── SUBJECT_README.md          # About the subject PDF
+│   ├── CODE_REVIEW_GUIDE.md       # Code review checklist
+│   ├── IMPLEMENTATION_SUMMARY.md  # Implementation notes
+│   ├── DOCUMENTATION_INDEX.md     # Documentation index
+│   ├── PROGRESS.md                # Progress tracking
+│   └── MODULE_README_TEMPLATE.md  # Template for module READMEs
+├── Templates/         # Exercise templates
+└── en.subject.pdf     # Official project subject (source of truth)
 ```
 
-> **Note**: The `subject.pdf` is the single source of truth and overrides any assumptions or interpretations.
+> **Note**: The `en.subject.pdf` is the single source of truth and overrides any assumptions or interpretations.
 
 ## 🚀 Getting Started
 
-> **📖 New to this project?** Check out the [Setup Guide](SETUP.md) for detailed instructions!
+> **📖 New to this project?** Check out the [Setup Guide](Guides/SETUP.md) for detailed instructions!
 
 ### Prerequisites
 
@@ -50,21 +60,20 @@ The project is organized into modules, each focusing on specific OOP concepts:
    cd 42-CppPiscine
    ```
 
-2. **Add the subject.pdf** (see [SUBJECT_README.md](SUBJECT_README.md))
+2. **Understand the subject** (see [Guides/SUBJECT_README.md](Guides/SUBJECT_README.md))
 
-3. **Set up your first exercise**:
+3. **Navigate to a module**:
    ```bash
-   ./setup_exercise.sh Module00 ex00 YourClassName
    cd Module00/ex00
    ```
 
 4. **Build and test**:
    ```bash
    make
-   ./program_name
+   ./relationship
    ```
 
-For complete setup instructions, see [SETUP.md](SETUP.md).
+For complete setup instructions, see [Guides/SETUP.md](Guides/SETUP.md).
 
 ### Building
 
@@ -120,6 +129,8 @@ All code in this repository must comply with the **42 School Norm**, which inclu
 
 ## 🔍 Code Review Guidelines
 
+> **📝 See [Guides/CODE_REVIEW_GUIDE.md](Guides/CODE_REVIEW_GUIDE.md) for detailed checklist**
+
 When submitting a pull request:
 
 1. **Ensure compliance** with the subject requirements
@@ -149,6 +160,17 @@ c++ -Wall -Wextra -Werror -std=c++98 *.cpp -o program_name
 ## 📝 Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code review process and coding standards.
+
+## 📖 Documentation
+
+All guides and documentation are organized in the `Guides/` directory:
+
+- **[Setup Guide](Guides/SETUP.md)** - Complete setup instructions
+- **[Subject README](Guides/SUBJECT_README.md)** - Understanding the subject PDF
+- **[Code Review Guide](Guides/CODE_REVIEW_GUIDE.md)** - Code review checklist
+- **[Implementation Summary](Guides/IMPLEMENTATION_SUMMARY.md)** - Implementation notes
+- **[Documentation Index](Guides/DOCUMENTATION_INDEX.md)** - Full documentation index
+- **[Progress Tracking](Guides/PROGRESS.md)** - Track your progress
 
 ## ❓ FAQ
 
