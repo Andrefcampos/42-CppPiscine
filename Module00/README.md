@@ -1,64 +1,64 @@
 # Module 00 - Encapsulation
 
-## Visão Geral
-Este módulo introduz o conceito fundamental de **Encapsulamento** em Programação Orientada a Objetos (OOP).
+## Overview
+This module introduces the fundamental concept of **Encapsulation** in Object-Oriented Programming (OOP).
 
-### Conceitos-Chave
-- **Objeto**: conceito que representa uma "coisa"
-- **Instância**: entidade concreta de um objeto
-- **Atributos**: variáveis internas de uma instância
-- **Métodos**: formas de comunicação com uma instância
-- **Encapsulamento**: controle de acesso a atributos e métodos
-  - **Private**: acessível apenas pela própria classe (e friends)
-  - **Public**: acessível de qualquer lugar
+### Key Concepts
+- **Object**: concept that represents a "thing"
+- **Instance**: concrete entity of an object
+- **Attributes**: internal variables of an instance
+- **Methods**: ways to communicate with an instance
+- **Encapsulation**: access control to attributes and methods
+  - **Private**: accessible only by the class itself (and friends)
+  - **Public**: accessible from anywhere
 
 ---
 
-## Exercícios
+## Exercises
 
 ### [Exercise 00: Divide and Conquer](ex00/)
-Sistema bancário com encapsulamento adequado.
+Banking system with proper encapsulation.
 
-**Objetivos:**
-- Refatorar código sem encapsulamento
-- Implementar sistema de contas bancárias
-- Aplicar taxa de 5% em depósitos
-- Controlar empréstimos baseado em liquidez
+**Objectives:**
+- Refactor code without encapsulation
+- Implement banking account system
+- Apply 5% fee on deposits
+- Control loans based on liquidity
 
-**Compilar e executar:**
+**Compile and run:**
 ```bash
 cd ex00
 make
 ./bank
 ```
 
-**Requisitos:**
-- ✅ Banco recebe 5% de cada depósito
-- ✅ Contas com IDs únicos
-- ✅ Atributos privados
-- ✅ Banco gerencia contas
-- ✅ Empréstimos limitados pela liquidez
-- ✅ Getters const por referência
+**Requirements:**
+- ✅ Bank receives 5% of each deposit
+- ✅ Accounts with unique IDs
+- ✅ Private attributes
+- ✅ Bank manages accounts
+- ✅ Loans limited by liquidity
+- ✅ Const getters by reference
 
 ---
 
 ### [Exercise 01: I don't know what I'm doing!](ex01/)
-Sistema de gráfico ASCII com pontos representados por Vector2.
+ASCII graph system with points represented by Vector2.
 
-**Objetivos:**
-- Criar estrutura `Vector2` (x, y em float)
-- Criar classe `Graph` para plotar pontos
-- Exibir gráfico em ASCII art no console
-- Aplicar encapsulamento correto
+**Objectives:**
+- Create `Vector2` structure (x, y as floats)
+- Create `Graph` class to plot points
+- Display graph in ASCII art on console
+- Apply proper encapsulation
 
-**Compilar e executar:**
+**Compile and run:**
 ```bash
 cd ex01
 make
 ./graph
 ```
 
-**Exemplo de saída (pontos em 0/0, 2/2, 4/2, 2/4):**
+**Example output (points at 0/0, 2/2, 4/2, 2/4):**
 ```
 >& 5 . . . . . .
 >& 4 . . X . . .
@@ -69,25 +69,25 @@ make
 >& 0 1 2 3 4 5
 ```
 
-**Requisitos:**
-- ✅ Vector2 com x e y encapsulados
-- ✅ Graph com size e lista de pontos
-- ✅ Adicionar pontos ao gráfico
-- ✅ Exibir gráfico no console
-- ✅ Decisões de encapsulamento justificáveis
+**Requirements:**
+- ✅ Vector2 with encapsulated x and y
+- ✅ Graph with size and list of points
+- ✅ Add points to graph
+- ✅ Display graph on console
+- ✅ Justifiable encapsulation decisions
 
 ---
 
-## Estrutura do Module00
+## Module00 Structure
 
 ```
 Module00/
-├── DivideAndRule.cpp       # Código original (sem encapsulamento)
-├── en.subject.pdf          # Subject do módulo
-├── README.md               # Este arquivo
-├── COMPARISON.md           # Comparação antes/depois
-├── CHECKLIST.md            # Checklist de avaliação
-├── ex00/                   # Exercício 00: Banco
+├── DivideAndRule.cpp       # Original code (without encapsulation)
+├── en.subject.pdf          # Module subject
+├── README.md               # This file
+├── COMPARISON.md           # Before/after comparison
+├── CHECKLIST.md            # Evaluation checklist
+├── ex00/                   # Exercise 00: Bank
 │   ├── inc/
 │   │   ├── Account.hpp
 │   │   └── Bank.hpp
@@ -96,7 +96,7 @@ Module00/
 │   │   ├── Bank.cpp
 │   │   └── main.cpp
 │   └── Makefile
-└── ex01/                   # Exercício 01: Graph
+└── ex01/                   # Exercise 01: Graph
     ├── inc/
     │   ├── Vector2.hpp
     │   └── Graph.hpp
@@ -109,19 +109,19 @@ Module00/
 
 ---
 
-## Detalhes dos Exercícios
+## Exercise Details
 
 ### Exercise 00: Divide and Conquer
 
-#### Classes Implementadas
+#### Implemented Classes
 
-**Account (Conta)**
+**Account**
 ```cpp
 class Account {
 private:
-    int _id;        // ID único
-    int _value;     // Saldo
-    Account(int id); // Construtor privado
+    int _id;        // Unique ID
+    int _value;     // Balance
+    Account(int id); // Private constructor
     friend class Bank;
 public:
     const int& getId() const;
@@ -129,7 +129,7 @@ public:
 };
 ```
 
-**Bank (Banco)**
+**Bank**
 ```cpp
 class Bank {
 private:
@@ -139,32 +139,32 @@ private:
 public:
     Account* createAccount();
     void deleteAccount(int accountId);
-    bool deposit(int accountId, int amount);    // Taxa 5%
+    bool deposit(int accountId, int amount);    // 5% fee
     bool withdraw(int accountId, int amount);
     bool giveLoan(int accountId, int amount);
     const int& getLiquidity() const;
 };
 ```
 
-#### Decisões de Encapsulamento
+#### Encapsulation Decisions
 
-1. **Account com construtor privado**
-   - Apenas Bank pode criar contas
-   - Garante IDs únicos
+1. **Account with private constructor**
+   - Only Bank can create accounts
+   - Ensures unique IDs
 
 2. **Friend class**
-   - Bank acessa membros privados de Account
-   - Não expõe atributos publicamente
+   - Bank accesses Account's private members
+   - Does not expose attributes publicly
 
-3. **Getters por referência const**
-   - Eficiência (sem cópias)
-   - Segurança (const impede modificação)
+3. **Getters by const reference**
+   - Efficiency (no copies)
+   - Safety (const prevents modification)
 
 ---
 
 ### Exercise 01: I don't know what I'm doing!
 
-#### Classes Implementadas
+#### Implemented Classes
 
 **Vector2**
 ```cpp
@@ -197,81 +197,81 @@ public:
 };
 ```
 
-#### Decisões de Encapsulamento
+#### Encapsulation Decisions
 
-1. **Vector2 com atributos privados**
-   - x e y não podem ser modificados diretamente
-   - Setters permitem validação se necessário
+1. **Vector2 with private attributes**
+   - x and y cannot be modified directly
+   - Setters allow validation if needed
 
-2. **Graph com lista privada**
-   - Pontos gerenciados internamente
-   - Validação de bounds ao adicionar
+2. **Graph with private list**
+   - Points managed internally
+   - Bounds validation when adding
 
-3. **Método display() público**
-   - Interface para visualização
-   - Não expõe dados internos
+3. **Public display() method**
+   - Interface for visualization
+   - Does not expose internal data
 
 ---
 
-## Conceitos de OOP Aplicados
+## Applied OOP Concepts
 
-### 1. Encapsulamento
-- Atributos privados
-- Acesso controlado via getters/setters
-- Validações em métodos públicos
+### 1. Encapsulation
+- Private attributes
+- Controlled access via getters/setters
+- Validations in public methods
 
 ### 2. Friend Class
-- Relacionamento especial entre classes
-- Acesso a membros privados sem exposição pública
+- Special relationship between classes
+- Access to private members without public exposure
 
 ### 3. Const Correctness
-- Métodos const não modificam objeto
-- Referências const impedem modificação
+- Const methods do not modify object
+- Const references prevent modification
 
-### 4. Validação de Regras de Negócio
-- Depósitos/saques validados
-- Pontos dentro dos limites do gráfico
-- Empréstimos limitados pela liquidez
+### 4. Business Rule Validation
+- Deposits/withdrawals validated
+- Points within graph bounds
+- Loans limited by liquidity
 
 ---
 
-## Como Avaliar
+## How to Evaluate
 
-### Perguntas Comuns na Defesa
+### Common Defense Questions
 
 **Ex00:**
-1. Por que Account tem construtor privado?
-2. O que é friend class e quando usar?
-3. Por que getters por referência?
-4. Como garantir IDs únicos?
-5. Por que validar operações bancárias?
+1. Why does Account have a private constructor?
+2. What is friend class and when to use it?
+3. Why getters by reference?
+4. How to ensure unique IDs?
+5. Why validate banking operations?
 
 **Ex01:**
-1. Por que x e y são privados?
-2. Como você controla a adição de pontos?
-3. Por que Vector2 tem setters mas Account não?
-4. Como funciona a exibição do gráfico?
-5. Que decisões de encapsulamento você fez e por quê?
+1. Why are x and y private?
+2. How do you control point addition?
+3. Why does Vector2 have setters but Account doesn't?
+4. How does graph display work?
+5. What encapsulation decisions did you make and why?
 
-### Teste de Encapsulamento
+### Encapsulation Test
 
-Tente acessar atributos privados no main:
+Try to access private attributes in main:
 ```cpp
-account->_id = 999;      // ❌ Não compila
-vector._x = 100;         // ❌ Não compila
-graph._points.clear();   // ❌ Não compila
+account->_id = 999;      // ❌ Does not compile
+vector._x = 100;         // ❌ Does not compile
+graph._points.clear();   // ❌ Does not compile
 ```
 
-Se não compilar = Encapsulamento funcionando! ✅
+If it doesn't compile = Encapsulation working! ✅
 
 ---
 
-## Compilação
+## Compilation
 
-Ambos exercícios seguem as regras:
-- Compilador: `c++`
+Both exercises follow the rules:
+- Compiler: `c++`
 - Flags: `-Wall -Wextra -Werror -std=c++98`
-- Makefile com regras: `all`, `clean`, `fclean`, `re`
-- Sem relink desnecessário
-- Sem bibliotecas externas ou Boost
+- Makefile with rules: `all`, `clean`, `fclean`, `re`
+- No unnecessary relink
+- No external libraries or Boost
 
